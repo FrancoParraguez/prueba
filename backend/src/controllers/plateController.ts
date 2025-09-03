@@ -4,14 +4,14 @@ import { AuthRequest } from '../middleware/auth';
 import logger from '../utils/logger';
 
 export const getPlates = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const offset = (page - 1) * limit;
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const offset = (page - 1) * limit;
 
+  try {
     // Obtener placas con paginación
     const plates = await query(
-      `SELECT * FROM plates WHERE is_active = TRUE 
+      `SELECT * FROM plates WHERE is_active = TRUE
        ORDER BY created_at DESC LIMIT ? OFFSET ?`,
       [limit, offset]
     );
@@ -31,7 +31,12 @@ export const getPlates = async (req: Request, res: Response): Promise<void> => {
     });
   } catch (error) {
     logger.error('Get plates error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(200).json({
+      plates: [],
+      currentPage: page,
+      totalPages: 0,
+      totalPlates: 0
+    });
   }
 };
 

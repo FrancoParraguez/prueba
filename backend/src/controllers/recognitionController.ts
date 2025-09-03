@@ -56,16 +56,16 @@ export const processImage = async (req: AuthRequest, res: Response): Promise<voi
 };
 
 export const getVerificationHistory = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const offset = (page - 1) * limit;
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const offset = (page - 1) * limit;
 
+  try {
     const verifications = await query(
-      `SELECT v.*, u.name as verified_by_name, u.email as verified_by_email 
-       FROM verifications v 
-       LEFT JOIN users u ON v.verified_by = u.id 
-       ORDER BY v.timestamp DESC 
+      `SELECT v.*, u.name as verified_by_name, u.email as verified_by_email
+       FROM verifications v
+       LEFT JOIN users u ON v.verified_by = u.id
+       ORDER BY v.timestamp DESC
        LIMIT ? OFFSET ?`,
       [limit, offset]
     );
@@ -84,6 +84,11 @@ export const getVerificationHistory = async (req: Request, res: Response): Promi
     });
   } catch (error) {
     logger.error('Error fetching verification history:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(200).json({
+      verifications: [],
+      currentPage: page,
+      totalPages: 0,
+      totalVerifications: 0
+    });
   }
 };
