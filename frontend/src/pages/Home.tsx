@@ -22,7 +22,7 @@ const Home: React.FC = () => {
               {user ? (
                 <Link
                   to="/dashboard"
-                  className="btn-primary px-8 py-3 rounded-lg text-white font-semibold text-lg inline-block"
+                  className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg text-white font-semibold text-lg inline-block"
                 >
                   <i className="fas fa-tachometer-alt mr-2"></i>
                   Ir al Dashboard
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
                 <>
                   <Link
                     to="/login"
-                    className="btn-primary px-8 py-3 rounded-lg text-white font-semibold text-lg inline-block"
+                    className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg text-white font-semibold text-lg inline-block"
                   >
                     <i className="fas fa-sign-in-alt mr-2"></i>
                     Iniciar Sesión

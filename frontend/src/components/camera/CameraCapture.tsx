@@ -80,8 +80,8 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onVerificationResult, onL
           <option value="environment">Cámara Trasera</option>
           <option value="user">Cámara Frontal</option>
         </select>
-        <button 
-          className="btn-success px-6 py-2 rounded-lg text-white font-medium"
+        <button
+          className="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg text-white font-medium"
           onClick={capture}
           disabled={!cameraEnabled}
         >

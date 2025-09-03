@@ -29,8 +29,8 @@ const CameraControls: React.FC<CameraControlsProps> = ({
         <option value="user">Cámara Frontal</option>
       </select>
       
-      <button 
-        className="btn-success px-6 py-2 rounded-lg text-white font-medium disabled:opacity-50"
+      <button
+        className="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg text-white font-medium disabled:opacity-50"
         onClick={onCapture}
         disabled={!cameraEnabled || loading}
       >
