@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
@@ -22,24 +23,24 @@ const Footer: React.FC = () => {
             <h4 className="text-lg font-semibold mb-4">Enlaces Útiles</h4>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <Link to="/" className="hover:text-white transition-colors">
                   <i className="fas fa-home mr-2"></i>Inicio
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#dashboard" className="hover:text-white transition-colors">
+                <Link to="/dashboard" className="hover:text-white transition-colors">
                   <i className="fas fa-tachometer-alt mr-2"></i>Dashboard
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#history" className="hover:text-white transition-colors">
+                <Link to="/history" className="hover:text-white transition-colors">
                   <i className="fas fa-history mr-2"></i>Historial
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#admin" className="hover:text-white transition-colors">
+                <Link to="/admin" className="hover:text-white transition-colors">
                   <i className="fas fa-cog mr-2"></i>Administración
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

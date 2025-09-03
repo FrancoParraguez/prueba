@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const Header: React.FC = () => {
@@ -12,13 +13,18 @@ const Header: React.FC = () => {
           <span className="font-bold text-xl">Sistema de Patentes</span>
         </div>
         <div className="flex space-x-6 items-center">
-          <a href="#" className="hover:text-blue-200 font-medium">
-            <i className="fas fa-home mr-1"></i> Inicio
-          </a>
+          <Link to="/dashboard" className="hover:text-blue-200 font-medium">
+            <i className="fas fa-home mr-1"></i> Dashboard
+          </Link>
+          {user && (
+            <Link to="/history" className="hover:text-blue-200 font-medium">
+              <i className="fas fa-history mr-1"></i> Historial
+            </Link>
+          )}
           {user?.role === 'admin' && (
-            <a href="#" className="hover:text-blue-200 font-medium">
+            <Link to="/admin" className="hover:text-blue-200 font-medium">
               <i className="fas fa-cog mr-1"></i> Administración
-            </a>
+            </Link>
           )}
           <div className="flex items-center space-x-2 bg-blue-700 px-3 py-1 rounded-full">
             <i className="fas fa-user-circle"></i>
