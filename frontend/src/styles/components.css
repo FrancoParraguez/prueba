@@ -191,41 +191,6 @@
   height: 300px;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  color: white;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, #1d4ed8, #1e40af);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4);
-}
-
-.btn-success {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
-  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
-}
-
-.btn-success:hover {
-  background: linear-gradient(135deg, #059669, #047857);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(16, 185, 129, 0.4);
-}
-
-.btn-danger {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
-}
-
-.btn-danger:hover {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(239, 68, 68, 0.4);
-}
 
 .btn-warning {
   background: linear-gradient(135deg, #f59e0b, #d97706);
@@ -585,21 +550,6 @@
 
 /* High contrast mode */
 @media (prefers-contrast: high) {
-  .btn-primary {
-    background: #000;
-    border: 2px solid #000;
-  }
-
-  .btn-success {
-    background: #006400;
-    border: 2px solid #006400;
-  }
-
-  .btn-danger {
-    background: #8B0000;
-    border: 2px solid #8B0000;
-  }
-
   .plate-number {
     background: #000;
     border-color: #000;
