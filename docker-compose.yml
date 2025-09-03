@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # Base de datos MySQL en Docker
   mysql:
     image: mysql:8.0
     container_name: plate-mysql
@@ -22,7 +19,6 @@ services:
       timeout: 5s
       retries: 3
 
-  # Backend Node.js
   backend:
     build:
       context: ./backend
@@ -32,9 +28,9 @@ services:
       - DB_HOST=mysql
       - DB_PORT=3306
       - DB_NAME=plate_verification
-      - DB_USER=root
-      - DB_PASSWORD=password
-      - JWT_SECRET=your_jwt_secret_here_change_in_production
+      - DB_USER=user
+      - DB_PASSWORD=userpassword
+      - JWT_SECRET=pon_un_secreto_real_aqui
       - PLATE_RECOGNIZER_API_KEY=your_api_key_here
       - PORT=5000
       - NODE_ENV=development
@@ -47,9 +43,14 @@ services:
       mysql:
         condition: service_healthy
     restart: unless-stopped
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "npm run dev"
+    # Opcional:
+    # healthcheck:
+    #   test: ["CMD", "wget", "-qO-", "http://localhost:5000/api/health"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 
-  # Frontend React
   frontend:
     build:
       context: ./frontend
@@ -61,7 +62,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - VITE_API_URL=http://backend:5000/api
+      - VITE_API_URL=http://localhost:5000/api
     depends_on:
       - backend
     restart: unless-stopped
