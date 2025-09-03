@@ -60,13 +60,17 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+
     environment:
       - VITE_API_URL=http://backend:5000/api
+
     depends_on:
       - backend
     restart: unless-stopped
     stdin_open: true
     tty: true
 
+
 volumes:
   mysql_data:
+
