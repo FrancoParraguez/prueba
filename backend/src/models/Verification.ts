@@ -1,61 +1,26 @@
-import mongoose, { Document, Schema, Types } from 'mongoose';
-
-export interface IVerification extends Document {
-  plateNumber: string;
-  recognizedPlate: string;
+export interface IVerification {
+  id?: number;
+  plate_number: string;
+  recognized_plate: string;
   confidence: number;
-  imageUrl: string;
-  isMatch: boolean;
-  verifiedBy: Types.ObjectId;
-  location?: {
-    latitude: number;
-    longitude: number;
-  };
+  image_url: string;
+  is_match: boolean;
+  verified_by: number;
+  latitude?: number;
+  longitude?: number;
   timestamp: Date;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
-const verificationSchema: Schema = new Schema({
-  plateNumber: {
-    type: String,
-    required: true,
-    uppercase: true,
-    trim: true
-  },
-  recognizedPlate: {
-    type: String,
-    required: true,
-    uppercase: true,
-    trim: true
-  },
-  confidence: {
-    type: Number,
-    required: true,
-    min: 0,
-    max: 100
-  },
-  imageUrl: {
-    type: String,
-    required: true
-  },
-  isMatch: {
-    type: Boolean,
-    required: true
-  },
-  verifiedBy: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  location: {
-    latitude: Number,
-    longitude: Number
-  },
-  timestamp: {
-    type: Date,
-    default: Date.now
+export class Verification {
+  static async findRecent(limit: number = 10): Promise<IVerification[]> {
+    // Implementation placeholder for fetching verifications
+    return [];
   }
-}, {
-  timestamps: true
-});
 
-export default mongoose.model<IVerification>('Verification', verificationSchema);
+  static async create(data: Omit<IVerification, 'id'>): Promise<IVerification> {
+    // Implementation placeholder for creating a verification
+    return data as IVerification;
+  }
+}
