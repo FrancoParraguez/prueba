@@ -18,7 +18,7 @@ const Home: React.FC = () => {
             <p className="text-xl md:text-2xl mb-8 opacity-90">
               Reconocimiento automático de patentes vehiculares mediante inteligencia artificial
             </p>
-            <div className="space-x-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {user ? (
                 <Link
                   to="/dashboard"
@@ -63,7 +63,7 @@ const Home: React.FC = () => {
             </p>
             </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
            <div className="feature-card bg-white p-8 rounded-xl shadow-lg text-center">
              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                <i className="fas fa-camera text-blue-600 text-2xl"></i>
@@ -115,7 +115,7 @@ const Home: React.FC = () => {
            </h2>
          </div>
 
-         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
            <div className="text-center">
              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">
                98.3%
