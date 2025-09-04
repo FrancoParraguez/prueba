@@ -9,6 +9,7 @@ const router = express.Router();
 // All routes require authentication
 router.use(authenticate);
 
+// Routes for getting plates
 router.get('/', getPlates);
 router.get('/stats', authorize('admin'), getPlateStats);
 router.get('/:id(\\d+)', getPlate);
