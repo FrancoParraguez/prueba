@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { getPlates, getPlate, createPlate, updatePlate, deletePlate } from '../controllers/plateController';
+import { getPlates, getPlate, createPlate, updatePlate, deletePlate, getPlateStats } from '../controllers/plateController';
 import { authenticate, authorize } from '../middleware/auth';
 import { handleValidationErrors } from '../middleware/validation';
 
@@ -10,7 +10,8 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/', getPlates);
-router.get('/:id', getPlate);
+router.get('/stats', authorize('admin'), getPlateStats);
+router.get('/:id(\\d+)', getPlate);
 
 // Only admins can modify plates
 router.post('/', [
@@ -18,20 +19,22 @@ router.post('/', [
   body('plateNumber').notEmpty().withMessage('Plate number is required'),
   body('owner').notEmpty().withMessage('Owner is required'),
   body('vehicleType').notEmpty().withMessage('Vehicle type is required'),
-  body('model').notEmpty().withMessage('Model is required'),
+  body('vehicleModel').notEmpty().withMessage('Vehicle model is required'),
   body('color').notEmpty().withMessage('Color is required'),
+  body('isActive').optional().isBoolean().withMessage('Active status must be boolean'),
   handleValidationErrors
 ], createPlate);
 
-router.put('/:id', [
+router.put('/:id(\\d+)', [
   authorize('admin'),
   body('owner').notEmpty().withMessage('Owner is required'),
   body('vehicleType').notEmpty().withMessage('Vehicle type is required'),
-  body('model').notEmpty().withMessage('Model is required'),
+  body('vehicleModel').notEmpty().withMessage('Vehicle model is required'),
   body('color').notEmpty().withMessage('Color is required'),
+  body('isActive').isBoolean().withMessage('Active status is required'),
   handleValidationErrors
 ], updatePlate);
 
-router.delete('/:id', authorize('admin'), deletePlate);
+router.delete('/:id(\\d+)', authorize('admin'), deletePlate);
 
 export default router;
