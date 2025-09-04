@@ -14,6 +14,18 @@ services:
       - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks: [plate_net]
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: plate-phpmyadmin
+    environment:
+      PMA_HOST: plate-mysql
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks: [plate_net]
+
   backend:
     build: ./backend
     container_name: plate-backend

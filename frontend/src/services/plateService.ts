@@ -4,8 +4,8 @@ export const processVerification = async (formData: FormData) => {
   try {
     const response = await api.post('/recognition/process', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
     return response.data;
   } catch (error: any) {
@@ -16,7 +16,7 @@ export const processVerification = async (formData: FormData) => {
 export const getVerificationHistory = async (page = 1, limit = 10) => {
   try {
     const response = await api.get('/recognition/history', {
-      params: { page, limit }
+      params: { page, limit },
     });
     return response.data;
   } catch (error: any) {
