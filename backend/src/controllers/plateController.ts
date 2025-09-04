@@ -76,7 +76,7 @@ export const getPlate = async (req: Request, res: Response): Promise<void> => {
 
 export const createPlate = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { plateNumber, owner, vehicleType, vehicleModel, color } = req.body;
+    const { plateNumber, owner, vehicleType, vehicleModel, color, isActive = true } = req.body;
 
     // Verificar si la placa ya existe
     const existingPlates = await query(
@@ -91,9 +91,9 @@ export const createPlate = async (req: AuthRequest, res: Response): Promise<void
 
     // Crear nueva placa
     const result = await query(
-      `INSERT INTO plates (plate_number, owner, vehicle_type, vehicle_model, color) 
-       VALUES (?, ?, ?, ?, ?)`,
-      [plateNumber.toUpperCase(), owner, vehicleType, vehicleModel, color]
+      `INSERT INTO plates (plate_number, owner, vehicle_type, vehicle_model, color, is_active)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [plateNumber.toUpperCase(), owner, vehicleType, vehicleModel, color, isActive]
     );
 
     // Obtener la placa creada

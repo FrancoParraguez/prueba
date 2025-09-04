@@ -46,7 +46,8 @@ const Admin: React.FC = () => {
         owner: formData.owner,
         vehicleType: formData.vehicleType,
         vehicleModel: formData.vehicleModel,
-        color: formData.color
+        color: formData.color,
+        isActive: formData.isActive
       });
       showNotification('success', 'Patente registrada exitosamente');
       setActiveTab('list');

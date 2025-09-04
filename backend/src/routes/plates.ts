@@ -21,6 +21,7 @@ router.post('/', [
   body('vehicleType').notEmpty().withMessage('Vehicle type is required'),
   body('vehicleModel').notEmpty().withMessage('Vehicle model is required'),
   body('color').notEmpty().withMessage('Color is required'),
+  body('isActive').optional().isBoolean().withMessage('Active status must be boolean'),
   handleValidationErrors
 ], createPlate);
 
@@ -30,6 +31,7 @@ router.put('/:id', [
   body('vehicleType').notEmpty().withMessage('Vehicle type is required'),
   body('vehicleModel').notEmpty().withMessage('Vehicle model is required'),
   body('color').notEmpty().withMessage('Color is required'),
+  body('isActive').isBoolean().withMessage('Active status is required'),
   handleValidationErrors
 ], updatePlate);
 
