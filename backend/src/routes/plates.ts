@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { getPlates, getPlate, createPlate, updatePlate, deletePlate } from '../controllers/plateController';
+import { getPlates, getPlate, createPlate, updatePlate, deletePlate, getPlateStats } from '../controllers/plateController';
 import { authenticate, authorize } from '../middleware/auth';
 import { handleValidationErrors } from '../middleware/validation';
 
@@ -10,6 +10,7 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/', getPlates);
+router.get('/stats', authorize('admin'), getPlateStats);
 router.get('/:id', getPlate);
 
 // Only admins can modify plates
