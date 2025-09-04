@@ -40,6 +40,21 @@ export const getPlates = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+export const getPlateStats = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const stats = await query(
+      `SELECT COUNT(*) AS total,
+              SUM(CASE WHEN is_active = TRUE THEN 1 ELSE 0 END) AS active,
+              SUM(CASE WHEN is_active = FALSE THEN 1 ELSE 0 END) AS inactive
+       FROM plates`
+    );
+    res.json(stats[0]);
+  } catch (error) {
+    logger.error('Get plate stats error:', error);
+    res.status(500).json({ total: 0, active: 0, inactive: 0 });
+  }
+};
+
 export const getPlate = async (req: Request, res: Response): Promise<void> => {
   try {
     const plates = await query(

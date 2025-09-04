@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PlateList from '../components/plates/PlateList';
 import PlateForm from '../components/plates/PlateForm';
-import { registerPlate } from '../services/plateService';
+import { registerPlate, getPlateStats } from '../services/plateService';
 import { useAuth } from '../context/AuthContext';
 import Notification from '../components/common/Notification';
 
@@ -17,6 +17,19 @@ const Admin: React.FC = () => {
     message: '',
     isVisible: false
   });
+  const [stats, setStats] = useState({ total: 0, active: 0, inactive: 0 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await getPlateStats();
+        setStats(data);
+      } catch (error) {
+        console.error('Error fetching stats', error);
+      }
+    };
+    fetchStats();
+  }, []);
 
   const showNotification = (type: 'success' | 'error' | 'warning' | 'info', message: string) => {
     setNotification({ type, message, isVisible: true });
@@ -87,7 +100,7 @@ const Admin: React.FC = () => {
               <i className="fas fa-car text-blue-600 text-xl"></i>
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-800">1,248</h3>
+              <h3 className="text-2xl font-bold text-gray-800">{stats.total.toLocaleString()}</h3>
               <p className="text-gray-600">Patentes Totales</p>
             </div>
           </div>
@@ -99,7 +112,7 @@ const Admin: React.FC = () => {
               <i className="fas fa-check-circle text-green-600 text-xl"></i>
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-800">1,180</h3>
+              <h3 className="text-2xl font-bold text-gray-800">{stats.active.toLocaleString()}</h3>
               <p className="text-gray-600">Patentes Activas</p>
             </div>
           </div>
@@ -111,7 +124,7 @@ const Admin: React.FC = () => {
               <i className="fas fa-pause-circle text-yellow-600 text-xl"></i>
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-800">68</h3>
+              <h3 className="text-2xl font-bold text-gray-800">{stats.inactive.toLocaleString()}</h3>
               <p className="text-gray-600">Patentes Inactivas</p>
             </div>
           </div>
