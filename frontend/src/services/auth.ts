@@ -13,18 +13,23 @@ export interface AuthResponse {
   user: User;
 }
 
-export const register = async (name: string, email: string, password: string, role: string = 'user'): Promise<AuthResponse> => {
-  const response = await api.post('/auth/register', { name, email, password, role });
+export const register = async (
+  name: string,
+  email: string,
+  password: string,
+  role: string = 'user'
+): Promise<AuthResponse> => {
+  const response = await api.post('auth/register', { name, email, password, role });
   return response.data;
 };
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
-  const response = await api.post('/auth/login', { email, password });
+  const response = await api.post('auth/login', { email, password });
   return response.data;
 };
 
 export const getProfile = async (): Promise<{ user: User }> => {
-  const response = await api.get('/auth/profile');
+  const response = await api.get('auth/profile');
   return response.data;
 };
 

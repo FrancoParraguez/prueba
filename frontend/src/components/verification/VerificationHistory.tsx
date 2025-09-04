@@ -28,8 +28,8 @@ const VerificationHistory: React.FC = () => {
     try {
       setLoading(true);
       const response = await getVerificationHistory(currentPage, 5);
-      setVerifications(response.verifications || []);
-      setTotalPages(response.totalPages || 1);
+      setVerifications(response.data || []);
+      setTotalPages(Math.ceil((response.total || 0) / (response.limit || 5)) || 1);
     } catch (err: any) {
       setError(err.message);
     } finally {
