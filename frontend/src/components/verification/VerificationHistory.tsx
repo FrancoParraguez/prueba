@@ -13,7 +13,7 @@ interface VerificationRecord {
   image_url?: string;
 }
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 20;
 
 const VerificationHistory: React.FC = () => {
   const [verifications, setVerifications] = useState<VerificationRecord[]>([]);
@@ -24,8 +24,6 @@ const VerificationHistory: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
-    // Si no hay token, no hagas la petición protegida
     if (!token) {
       setLoading(false);
       setError('Debes iniciar sesión para ver el historial.');
@@ -35,41 +33,37 @@ const VerificationHistory: React.FC = () => {
 
     let cancelled = false;
 
-    const fetchHistory = async () => {
+    (async () => {
       try {
         setError('');
         setLoading(true);
-        const response = await getVerificationHistory(currentPage, PAGE_SIZE);
-
+        const resp = await getVerificationHistory(currentPage, PAGE_SIZE);
         if (cancelled) return;
 
-        const items = response?.data ?? [];
-        const total = response?.total ?? 0;
-        const limit = response?.limit ?? PAGE_SIZE;
+        const items = resp?.data ?? [];
+        const total = resp?.total ?? 0;
+        const limit = resp?.limit ?? PAGE_SIZE;
 
         setVerifications(items);
         setTotalPages(Math.max(1, Math.ceil(total / limit)));
-      } catch (err: any) {
-        if (cancelled) return;
-        setError(err?.message || 'No se pudo cargar el historial.');
-        setVerifications([]);
+      } catch (e: any) {
+        if (!cancelled) {
+          setError(e?.message || 'No se pudo cargar el historial.');
+          setVerifications([]);
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
-    };
+    })();
 
-    fetchHistory();
     return () => {
       cancelled = true;
     };
   }, [currentPage]);
 
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return {
-      date: date.toLocaleDateString(),
-      time: date.toLocaleTimeString(),
-    };
+  const formatDateTime = (s: string) => {
+    const d = new Date(s);
+    return { date: d.toLocaleDateString(), time: d.toLocaleTimeString() };
   };
 
   if (loading && verifications.length === 0) {
@@ -99,40 +93,36 @@ const VerificationHistory: React.FC = () => {
 
       <div className="space-y-3">
         {verifications.length > 0 ? (
-          verifications.map((verification) => {
-            const { date, time } = formatDateTime(verification.timestamp);
+          verifications.map((v) => {
+            const { date, time } = formatDateTime(v.timestamp);
             return (
               <div
-                key={verification.id}
+                key={v.id}
                 className={`p-4 rounded-lg border-l-4 ${
-                  verification.is_match
-                    ? 'bg-green-50 border-green-500'
-                    : 'bg-red-50 border-red-500'
+                  v.is_match ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500'
                 }`}
               >
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex items-center">
                     <span className="plate-number text-sm mr-2">
-                      {verification.recognized_plate}
+                      {v.recognized_plate}
                     </span>
                     <span
                       className={`text-xs px-2 py-1 rounded-full ${
-                        verification.is_match
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
+                        v.is_match ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       }`}
                     >
-                      {verification.is_match ? 'Registrada' : 'No registrada'}
+                      {v.is_match ? 'Registrada' : 'No registrada'}
                     </span>
                   </div>
                   <div className="text-xs text-gray-500">
-                    {verification.confidence.toFixed(1)}%
+                    {v.confidence.toFixed(1)}%
                   </div>
                 </div>
 
                 <div className="text-xs text-gray-600">
                   <div className="flex justify-between">
-                    <span>Por: {verification.verified_by_name}</span>
+                    <span>Por: {v.verified_by_name}</span>
                     <span>{date} - {time}</span>
                   </div>
                 </div>
@@ -147,11 +137,10 @@ const VerificationHistory: React.FC = () => {
         )}
       </div>
 
-      {/* Paginación */}
       {totalPages > 1 && (
         <div className="flex justify-between items-center mt-6 pt-4 border-t">
           <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1 || loading}
             className="text-sm text-blue-600 hover:text-blue-800 disabled:text-gray-400 disabled:cursor-not-allowed"
           >
@@ -164,7 +153,7 @@ const VerificationHistory: React.FC = () => {
           </span>
 
           <button
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages || loading}
             className="text-sm text-blue-600 hover:text-blue-800 disabled:text-gray-400 disabled:cursor-not-allowed"
           >

@@ -12,12 +12,9 @@ export const authenticate = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // Soporta "authorization" como string o string[]
     const hdr = req.headers['authorization'];
-    let bearer = Array.isArray(hdr) ? hdr[0] : hdr;
+    const bearer = Array.isArray(hdr) ? hdr[0] : hdr;
     let token = bearer?.startsWith('Bearer ') ? bearer.slice(7).trim() : undefined;
-
-    // Fallbacks aceptados
     if (!token) token = req.header('x-auth-token') ?? (req as any).cookies?.token;
 
     if (!token) {

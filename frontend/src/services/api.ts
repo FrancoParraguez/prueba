@@ -1,17 +1,16 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 const rawBase = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-const base = rawBase.replace(/\/$/, ''); // quita / final
+const base = rawBase.replace(/\/$/, '');
 
 const api = axios.create({
   baseURL: base.endsWith('/api') ? base : `${base}/api`,
 });
 
-// Interceptor: agregar token
+// Agregar token
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem('token');
   if (token) {
-    // En Axios v1, headers puede ser AxiosHeaders (tiene .set) o un objeto plano
     const h: any = config.headers;
     if (h && typeof h.set === 'function') {
       h.set('Authorization', `Bearer ${token}`);
@@ -22,9 +21,9 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config;
 });
 
-// Interceptor: manejar 401 (token inválido/expirado)
+// Manejar 401
 api.interceptors.response.use(
-  (response) => response,
+  (res) => res,
   (error: AxiosError<any>) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
