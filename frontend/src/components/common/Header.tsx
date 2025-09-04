@@ -8,10 +8,13 @@ const Header: React.FC = () => {
   return (
     <nav className="bg-gradient-to-r from-blue-900 to-blue-600 text-white shadow-lg">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
+        <Link
+          to="/"
+          className="flex items-center space-x-2 hover:text-blue-200"
+        >
           <i className="fas fa-car text-2xl"></i>
           <span className="font-bold text-xl">Sistema de Patentes</span>
-        </div>
+        </Link>
         <div className="flex space-x-6 items-center">
           <Link to="/dashboard" className="hover:text-blue-200 font-medium">
             <i className="fas fa-home mr-1"></i> Dashboard
