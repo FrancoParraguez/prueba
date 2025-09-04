@@ -13,7 +13,7 @@ COPY . .
 RUN npm install -g ts-node
 
 # Exponer el puerto
-EXPOSE 5000
+EXPOSE 3001
 
 # Comando para desarrollo
 CMD ["npm", "run", "dev"]
