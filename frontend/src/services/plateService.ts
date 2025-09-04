@@ -33,6 +33,15 @@ export const getAllPlates = async () => {
   }
 };
 
+export const getPlateStats = async () => {
+  try {
+    const response = await api.get('/plates/stats');
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Error fetching plate stats');
+  }
+};
+
 export const registerPlate = async (plateData: any) => {
   try {
     const response = await api.post('/plates', plateData);
