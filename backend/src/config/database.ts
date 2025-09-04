@@ -6,7 +6,7 @@ let pool: mysql.Pool;
 const connectDB = async (): Promise<void> => {
   try {
     pool = mysql.createPool({
-      host: process.env.DB_HOST || 'mysql',
+      host: process.env.DB_HOST || 'plate-mysql',
       port: parseInt(process.env.DB_PORT || '3306'),
       database: process.env.DB_NAME || 'plate_verification',
       user: process.env.DB_USER || 'root',

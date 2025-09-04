@@ -40,7 +40,10 @@ CREATE TABLE IF NOT EXISTS verifications (
     longitude DECIMAL(11, 8) NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_verif_plate_time (plate_number, timestamp),
+    CONSTRAINT fk_verif_plate FOREIGN KEY (plate_number) REFERENCES plates(plate_number)
+      ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Insertar usuario admin por defecto (password: admin123)

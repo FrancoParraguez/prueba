@@ -32,9 +32,9 @@ const History: React.FC = () => {
     try {
       setLoading(true);
       const response = await getVerificationHistory(currentPage, 20);
-      setVerifications(response.verifications || []);
-      setTotalPages(response.totalPages || 1);
-      setTotalVerifications(response.totalVerifications || 0);
+      setVerifications(response.data || []);
+      setTotalPages(Math.ceil((response.total || 0) / (response.limit || 20)) || 1);
+      setTotalVerifications(response.total || 0);
     } catch (err: any) {
       setError(err.message);
     } finally {
