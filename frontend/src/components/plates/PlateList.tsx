@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PlateItem from './PlateItem';
 import PlateForm from './PlateForm';
 import LoadingSpinner from '../common/LoadingSpinner';
-import { getAllPlates, updatePlate, deletePlate } from '../../services/plateService';
+import { getAllPlates, updatePlate, deletePlate, registerPlate } from '../../services/plateService';
 
 interface PlateData {
   id: string;
@@ -91,7 +91,13 @@ const PlateList: React.FC = () => {
     try {
       const plate = plates.find(p => p.id === id);
       if (plate) {
-        await updatePlate(id, { ...plate, isActive });
+        await updatePlate(id, {
+          owner: plate.owner,
+          vehicleType: plate.vehicle_type,
+          vehicleModel: plate.vehicle_model,
+          color: plate.color,
+          isActive,
+        });
         await fetchPlates();
       }
     } catch (err: any) {
@@ -103,6 +109,8 @@ const PlateList: React.FC = () => {
     try {
       if (editingPlate) {
         await updatePlate(editingPlate.id, formData);
+      } else {
+        await registerPlate(formData);
       }
       await fetchPlates();
       setShowForm(false);
