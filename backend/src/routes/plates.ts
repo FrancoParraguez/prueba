@@ -18,7 +18,7 @@ router.post('/', [
   body('plateNumber').notEmpty().withMessage('Plate number is required'),
   body('owner').notEmpty().withMessage('Owner is required'),
   body('vehicleType').notEmpty().withMessage('Vehicle type is required'),
-  body('model').notEmpty().withMessage('Model is required'),
+  body('vehicleModel').notEmpty().withMessage('Vehicle model is required'),
   body('color').notEmpty().withMessage('Color is required'),
   handleValidationErrors
 ], createPlate);
@@ -27,7 +27,7 @@ router.put('/:id', [
   authorize('admin'),
   body('owner').notEmpty().withMessage('Owner is required'),
   body('vehicleType').notEmpty().withMessage('Vehicle type is required'),
-  body('model').notEmpty().withMessage('Model is required'),
+  body('vehicleModel').notEmpty().withMessage('Vehicle model is required'),
   body('color').notEmpty().withMessage('Color is required'),
   handleValidationErrors
 ], updatePlate);
