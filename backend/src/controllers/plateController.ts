@@ -11,14 +11,14 @@ export const getPlates = async (req: Request, res: Response): Promise<void> => {
   try {
     // Obtener placas con paginación
     const plates = await query(
-      `SELECT * FROM plates WHERE is_active = TRUE
+      `SELECT * FROM plates
        ORDER BY created_at DESC LIMIT ? OFFSET ?`,
       [limit, offset]
     );
 
     // Obtener conteo total
     const countResult = await query(
-      'SELECT COUNT(*) as total FROM plates WHERE is_active = TRUE'
+      'SELECT COUNT(*) as total FROM plates'
     );
 
     const total = countResult[0].total;
@@ -58,7 +58,7 @@ export const getPlateStats = async (req: Request, res: Response): Promise<void> 
 export const getPlate = async (req: Request, res: Response): Promise<void> => {
   try {
     const plates = await query(
-      'SELECT * FROM plates WHERE id = ? AND is_active = TRUE',
+      'SELECT * FROM plates WHERE id = ?',
       [req.params.id]
     );
 
