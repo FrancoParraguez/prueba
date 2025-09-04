@@ -1,8 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-
-// Importaciones de rutas
 import authRoutes from './routes/auth';
 import plateRoutes from './routes/plates';
 import recognitionRoutes from './routes/recognition';
@@ -41,19 +39,12 @@ app.use('/uploads', express.static('uploads'));
 
 // Middleware de manejo de errores
 app.use(
-  (
-    error: any,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
+  (error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error('Error:', error);
 
     // Manejo de errores de carga de archivos
     if (error.code && error.code.startsWith('LIMIT_')) {
-      return res
-        .status(400)
-        .json({ error: 'File upload error: ' + error.message });
+      return res.status(400).json({ error: 'File upload error: ' + error.message });
     }
 
     if (error.message === 'Not an image! Please upload an image.') {
@@ -89,9 +80,7 @@ const startServer = async () => {
     await connectDB();
     const server = app.listen(port, () => {
       console.log(`🚀 Server is running on port ${port}`);
-      console.log(
-        `📊 Health check available at http://localhost:${port}/api/health`
-      );
+      console.log(`📊 Health check available at http://localhost:${port}/api/health`);
     });
 
     // Manejo de cierre de servidor por SIGTERM
