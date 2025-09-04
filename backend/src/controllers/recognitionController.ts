@@ -56,11 +56,11 @@ export const processImage = async (req: AuthRequest, res: Response): Promise<voi
 };
 
 export const getVerificationHistory = async (req: Request, res: Response): Promise<void> => {
-  const page = parseInt(req.query.page as string) || 1;
-  const limit = parseInt(req.query.limit as string) || 10;
-  const offset = (page - 1) * limit;
-
   try {
+    const page = Math.max(1, parseInt(String(req.query.page || 1), 10));
+    const limit = Math.min(100, Math.max(1, parseInt(String(req.query.limit || 10), 10)));
+    const offset = (page - 1) * limit;
+
     const verifications = await query(
       `SELECT v.*, u.name as verified_by_name, u.email as verified_by_email
        FROM verifications v
@@ -70,25 +70,14 @@ export const getVerificationHistory = async (req: Request, res: Response): Promi
       [limit, offset]
     );
 
-    const countResult = await query(
-      'SELECT COUNT(*) as total FROM verifications'
-    );
-
+    const countResult = await query('SELECT COUNT(*) as total FROM verifications');
     const total = countResult[0].total;
 
-    res.status(200).json({
-      verifications,
-      currentPage: page,
-      totalPages: Math.ceil(total / limit),
-      totalVerifications: total
-    });
-  } catch (error) {
+    res.json({ data: verifications, page, limit, total });
+  } catch (error: any) {
     logger.error('Error fetching verification history:', error);
-    res.status(200).json({
-      verifications: [],
-      currentPage: page,
-      totalPages: 0,
-      totalVerifications: 0
-    });
+    res
+      .status(500)
+      .json({ error: 'Internal Server Error', detail: error.code || error.message });
   }
 };

@@ -11,13 +11,18 @@ import connectDB from './config/database';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 3001;
 
 // Connect to MySQL
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: ['http://localhost:5173'],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -73,9 +78,9 @@ process.on('uncaughtException', (err: Error) => {
 });
 
 // Start server
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-  console.log(`📊 Health check available at http://localhost:${PORT}/api/health`);
+const server = app.listen(port, () => {
+  console.log(`🚀 Server is running on port ${port}`);
+  console.log(`📊 Health check available at http://localhost:${port}/api/health`);
 });
 
 // Handle graceful shutdown
