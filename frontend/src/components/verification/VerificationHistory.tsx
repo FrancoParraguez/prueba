@@ -13,6 +13,8 @@ interface VerificationRecord {
   image_url?: string;
 }
 
+const PAGE_SIZE = 5;
+
 const VerificationHistory: React.FC = () => {
   const [verifications, setVerifications] = useState<VerificationRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,27 +23,52 @@ const VerificationHistory: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchHistory();
-  }, [currentPage]);
+    const token = localStorage.getItem('token');
 
-  const fetchHistory = async () => {
-    try {
-      setLoading(true);
-      const response = await getVerificationHistory(currentPage, 5);
-      setVerifications(response.data || []);
-      setTotalPages(Math.ceil((response.total || 0) / (response.limit || 5)) || 1);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
+    // Si no hay token, no hagas la petición protegida
+    if (!token) {
       setLoading(false);
+      setError('Debes iniciar sesión para ver el historial.');
+      setVerifications([]);
+      return;
     }
-  };
+
+    let cancelled = false;
+
+    const fetchHistory = async () => {
+      try {
+        setError('');
+        setLoading(true);
+        const response = await getVerificationHistory(currentPage, PAGE_SIZE);
+
+        if (cancelled) return;
+
+        const items = response?.data ?? [];
+        const total = response?.total ?? 0;
+        const limit = response?.limit ?? PAGE_SIZE;
+
+        setVerifications(items);
+        setTotalPages(Math.max(1, Math.ceil(total / limit)));
+      } catch (err: any) {
+        if (cancelled) return;
+        setError(err?.message || 'No se pudo cargar el historial.');
+        setVerifications([]);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    fetchHistory();
+    return () => {
+      cancelled = true;
+    };
+  }, [currentPage]);
 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return {
       date: date.toLocaleDateString(),
-      time: date.toLocaleTimeString()
+      time: date.toLocaleTimeString(),
     };
   };
 
@@ -124,20 +151,20 @@ const VerificationHistory: React.FC = () => {
       {totalPages > 1 && (
         <div className="flex justify-between items-center mt-6 pt-4 border-t">
           <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1 || loading}
             className="text-sm text-blue-600 hover:text-blue-800 disabled:text-gray-400 disabled:cursor-not-allowed"
           >
             <i className="fas fa-chevron-left mr-1"></i>
             Anterior
           </button>
-          
+
           <span className="text-sm text-gray-600">
             Página {currentPage} de {totalPages}
           </span>
-          
+
           <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages || loading}
             className="text-sm text-blue-600 hover:text-blue-800 disabled:text-gray-400 disabled:cursor-not-allowed"
           >

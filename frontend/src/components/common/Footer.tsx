@@ -55,11 +55,11 @@ const Footer: React.FC = () => {
               </p>
               <p>
                 <i className="fas fa-phone mr-2"></i>
-                +1 (555) 123-4567
+              (+56) 9 2345-4567
               </p>
               <p>
                 <i className="fas fa-map-marker-alt mr-2"></i>
-                123 Tech Street, Ciudad
+                123 Tech Street, Valparaíso - Chile
               </p>
             </div>
           </div>
@@ -69,7 +69,7 @@ const Footer: React.FC = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Sistema de Patentes. Todos los derechos reservados.
+            © 2025 Sistema de Patentes. Todos los derechos reservados.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-white transition-colors">
