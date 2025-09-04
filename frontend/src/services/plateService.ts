@@ -2,10 +2,10 @@ import api from './api';
 
 export const processVerification = async (formData: FormData) => {
   try {
-    const response = await api.post('/recognition/process', formData, {
+    const response = await api.post('/api/recognition/process', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
     return response.data;
   } catch (error: any) {
@@ -15,8 +15,8 @@ export const processVerification = async (formData: FormData) => {
 
 export const getVerificationHistory = async (page = 1, limit = 10) => {
   try {
-    const response = await api.get('/recognition/history', {
-      params: { page, limit }
+    const response = await api.get('/api/recognition/history', {
+      params: { page, limit },
     });
     return response.data;
   } catch (error: any) {
@@ -26,7 +26,7 @@ export const getVerificationHistory = async (page = 1, limit = 10) => {
 
 export const getAllPlates = async () => {
   try {
-    const response = await api.get('/plates');
+    const response = await api.get('/api/plates');
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.error || 'Error fetching plates');
@@ -35,7 +35,7 @@ export const getAllPlates = async () => {
 
 export const getPlateStats = async () => {
   try {
-    const response = await api.get('/plates/stats');
+    const response = await api.get('/api/plates/stats');
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.error || 'Error fetching plate stats');
@@ -44,7 +44,7 @@ export const getPlateStats = async () => {
 
 export const registerPlate = async (plateData: any) => {
   try {
-    const response = await api.post('/plates', plateData);
+    const response = await api.post('/api/plates', plateData);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.error || 'Error registering plate');
@@ -53,7 +53,7 @@ export const registerPlate = async (plateData: any) => {
 
 export const updatePlate = async (id: string, plateData: any) => {
   try {
-    const response = await api.put(`/plates/${id}`, plateData);
+    const response = await api.put(`/api/plates/${id}`, plateData);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.error || 'Error updating plate');
@@ -62,7 +62,7 @@ export const updatePlate = async (id: string, plateData: any) => {
 
 export const deletePlate = async (id: string) => {
   try {
-    const response = await api.delete(`/plates/${id}`);
+    const response = await api.delete(`/api/plates/${id}`);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.error || 'Error deleting plate');
