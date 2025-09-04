@@ -1,12 +1,13 @@
 import axios from 'axios';
 
 const rawBase = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-const base = rawBase.replace(/\/$/, '');
+const base = rawBase.replace(/\/$/, ''); // elimina una / final si existe
+
 const api = axios.create({
   baseURL: base.endsWith('/api') ? base : `${base}/api`,
 });
 
-// Add token to requests
+// Agregar token a las solicitudes
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -15,7 +16,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle token expiration
+// Manejar la expiración del token
 api.interceptors.response.use(
   (response) => response,
   (error) => {
