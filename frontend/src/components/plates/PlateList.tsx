@@ -91,7 +91,13 @@ const PlateList: React.FC = () => {
     try {
       const plate = plates.find(p => p.id === id);
       if (plate) {
-        await updatePlate(id, { ...plate, isActive });
+        await updatePlate(id, {
+          owner: plate.owner,
+          vehicleType: plate.vehicle_type,
+          vehicleModel: plate.vehicle_model,
+          color: plate.color,
+          isActive,
+        });
         await fetchPlates();
       }
     } catch (err: any) {
