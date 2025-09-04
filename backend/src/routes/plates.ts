@@ -9,9 +9,10 @@ const router = express.Router();
 // All routes require authentication
 router.use(authenticate);
 
+// Routes for getting plates
 router.get('/', getPlates);
 router.get('/stats', authorize('admin'), getPlateStats);
-router.get('/:id', getPlate);
+router.get('/:id(\\d+)', getPlate);
 
 // Only admins can modify plates
 router.post('/', [
@@ -25,7 +26,7 @@ router.post('/', [
   handleValidationErrors
 ], createPlate);
 
-router.put('/:id', [
+router.put('/:id(\\d+)', [
   authorize('admin'),
   body('owner').notEmpty().withMessage('Owner is required'),
   body('vehicleType').notEmpty().withMessage('Vehicle type is required'),
@@ -35,6 +36,6 @@ router.put('/:id', [
   handleValidationErrors
 ], updatePlate);
 
-router.delete('/:id', authorize('admin'), deletePlate);
+router.delete('/:id(\\d+)', authorize('admin'), deletePlate);
 
 export default router;
