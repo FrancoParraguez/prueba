@@ -13,9 +13,6 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Conectar a la base de datos
-connectDB();
-
 // Middleware
 app.use(
   cors({
@@ -43,20 +40,29 @@ app.get('/api/health', (req, res) => {
 app.use('/uploads', express.static('uploads'));
 
 // Middleware de manejo de errores
-app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error:', error);
+app.use(
+  (
+    error: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error('Error:', error);
 
-  // Manejo de errores de carga de archivos
-  if (error.code && error.code.startsWith('LIMIT_')) {
-    return res.status(400).json({ error: 'File upload error: ' + error.message });
+    // Manejo de errores de carga de archivos
+    if (error.code && error.code.startsWith('LIMIT_')) {
+      return res
+        .status(400)
+        .json({ error: 'File upload error: ' + error.message });
+    }
+
+    if (error.message === 'Not an image! Please upload an image.') {
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(500).json({ error: 'Internal server error' });
   }
-
-  if (error.message === 'Not an image! Please upload an image.') {
-    return res.status(400).json({ error: error.message });
-  }
-
-  res.status(500).json({ error: 'Internal server error' });
-});
+);
 
 // Manejo de rutas no encontradas
 app.use('*', (req, res) => {
@@ -83,7 +89,9 @@ const startServer = async () => {
     await connectDB();
     const server = app.listen(port, () => {
       console.log(`🚀 Server is running on port ${port}`);
-      console.log(`📊 Health check available at http://localhost:${port}/api/health`);
+      console.log(
+        `📊 Health check available at http://localhost:${port}/api/health`
+      );
     });
 
     // Manejo de cierre de servidor por SIGTERM

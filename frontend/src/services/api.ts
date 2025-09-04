@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-const base = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const rawBase = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const base = rawBase.replace(/\/$/, ''); // elimina una / final si existe
+
 const api = axios.create({
-  baseURL: `${base}/api`,
+  baseURL: base.endsWith('/api') ? base : `${base}/api`,
 });
 
 // Agregar token a las solicitudes
